@@ -22,4 +22,4 @@ class ClientSessionManagerMixin:
         Returns:
             ClientResponse: The response from the API.
         """
-        return await self.session.get(self.BASE_URL + path, params=params)
+        return await (await self.session.get(self.BASE_URL + path, params=params)).json()

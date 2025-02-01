@@ -17,14 +17,8 @@ class SoccerTournamentApi:
             list[UniqueTournament]: A list of unique tournaments for the given category.
         """
         async with self:
-            response = await self._get(
+            content = await self._get(
                 f'api/v1/category/{category.id}/unique-tournaments')
-            try:
-                content = await response.json()
-            except Exception as e:
-                print(response.request_info)
-                print(response.status)
-                print(response.content)
             return [
                 UniqueTournament(**uniqueTournament)
                 for uniqueTournament in
@@ -36,7 +30,7 @@ class SoccerTournamentApi:
         async with self:
             response = await self._get(
                 f'api/v1/unique-tournament/{unique_tournament.id}/seasons')
-            seasons = (await response.json())['seasons']
+            seasons = response['seasons']
             return SeasonList(seasons=seasons)
 
     async def get_tournament_standings(self,
@@ -50,6 +44,5 @@ class SoccerTournamentApi:
         async with self:
             response = await self._get(
                 f'api/v1/unique-tournament/{unique_tournament.id}/season/{season.id}/standings/home')
-            standings = (await response.json())['standings'][0]
-            print(standings)
+            standings = response['standings'][0]
             return Standings(**standings)

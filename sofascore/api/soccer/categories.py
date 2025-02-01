@@ -14,16 +14,8 @@ class SoccerCategoriesApi:
             Returns an empty list if an error occurs during the request or JSON parsing.
         """
         async with self:
-            response = await self._get('api/v1/sport/football/categories/')
-            try:
-                content = await response.json()
-                return CategoryList(
+            content = await self._get('api/v1/sport/football/categories/')
+            return CategoryList(
                     categories=[Category(**category) for category in
                                 content['categories']]
                 )
-            except Exception as e:
-                print(response.request_info)
-                print(response.status)
-                print(response.content)
-                print(f"Error occurred: {e}")
-                return []

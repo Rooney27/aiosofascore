@@ -91,29 +91,35 @@ class UniqueTournament(BaseModel):
     id: int
     displayInverseHomeAwayTeams: bool
 
+
 class Tournament(BaseModel):
     category: Category
-    id:int
-    is_group:bool = Field(..., alias="isGroup")
-    is_live:bool = Field(..., alias="isLive")
-    name:str
-    priority:int
-    slug:str
-    uniqueTournament:UniqueTournament
+    id: int
+    is_group: bool = Field(..., alias="isGroup")
+    is_live: bool = Field(..., alias="isLive")
+    name: str
+    priority: int
+    slug: str
+    uniqueTournament: UniqueTournament
+
+
 class Promotion(BaseModel):
     id: int
     text: str
 
+
 class Team(BaseModel):
-    disabled:bool
-    entityType:str
-    gender:str
-    id:int
-    name:str
+    disabled: bool
+    entityType: str
+    gender: str
+    id: int
+    name: str
     name_code: str = Field(..., alias="nameCode")
-    national:bool
-    short_name:str = Field(..., alias="shortName")
-    slug:str
+    national: bool
+    short_name: str = Field(..., alias="shortName")
+    slug: str
+
+
 class StandingsRow(BaseModel):
     descriptions: list[str]
     draws: int
@@ -124,28 +130,135 @@ class StandingsRow(BaseModel):
     position: int
     promotion: Promotion = None
     score_diff_formatted: str = Field(..., alias="scoreDiffFormatted")
-    scores_against:int = Field(..., alias="scoresAgainst")
-    scores_for:int = Field(..., alias="scoresFor")
-    team:Team
-    wins:int
+    scores_against: int = Field(..., alias="scoresAgainst")
+    scores_for: int = Field(..., alias="scoresFor")
+    team: Team
+    wins: int
+
 
 class Standings(BaseModel):
     descriptions: list[str]
     id: int
     name: str
-    rows:list[StandingsRow]
-    tournament:Tournament
+    rows: list[StandingsRow]
+    tournament: Tournament
+
 
 class Season(BaseModel):
-    name:str
-    year:str
-    editor:bool
-    id:int
+    name: str
+    year: str
+    editor: bool
+    id: int
+
 
 class SeasonList(BaseModel):
-    seasons:list[Season]
-    async def get_season_by_year(self,year:str)->Season:
-        return next((season for season in self.seasons if season.year == year), None)
+    seasons: list[Season]
 
-    async def get_current_season(self)->Season:
+    async def get_season_by_year(self, year: str) -> Season:
+        return next((season for season in self.seasons if season.year == year),
+                    None)
+
+    async def get_current_season(self) -> Season:
         return self.seasons[0]
+
+
+class TeamForm(BaseModel):
+    avg_rating: str = Field(alias='avgRating')
+    form: list[str]
+    position: int
+    value: str
+
+
+class PregameTeamForm(BaseModel):
+    away_team: TeamForm = Field(alias='awayTeam')
+    home_team: TeamForm = Field(alias='homeTeam')
+
+
+class Duel(BaseModel):
+    away_wins: int = Field(alias='awayWins')
+    draws: int
+    home_wins: int = Field(alias='homeWins')
+
+
+class H2H(BaseModel):
+    manager_duel: Duel = Field(alias='managerDuel')
+    team_duel: Duel = Field(alias='teamDuel')
+
+
+class Manager(BaseModel):
+    name: str
+    slug: str
+    short_name: str = Field(alias='shortName')
+    id: str
+
+
+class EventManagers(BaseModel):
+    home_manager: Manager = Field(alias='homeManager')
+    away_manager: Manager = Field(alias='awayManager')
+
+
+class RoundInfo(BaseModel):
+    round: int
+
+
+class City:
+    name: str
+
+
+class VenueCoordinates(BaseModel):
+    latitude: str
+    longtitude: str
+
+
+class Country(BaseModel):
+    alpha2: str
+    alpha3: str
+    name: str
+    slug: str
+
+
+class Stadium(BaseModel):
+    name: str
+    capacity: int
+
+
+class Venue(BaseModel):
+    city: City
+    venue_coordinates: VenueCoordinates = Field(alias='venueCoordinates')
+    hidden: bool
+    slug: str
+    name: str
+    capacity: int
+    id: int
+    country: Country
+    stadium: Stadium
+
+
+class Referee(BaseModel):
+    name: str
+    slug: str
+    yellow_cards: int = Field(alias='yellowCards')
+    red_cards: int = Field(alias='redCards')
+    yellow_red_cards: int = Field(alias='yellowRedCards')
+    games: int
+    sport: Sport
+    id: int
+    country: Country
+
+
+class EventTeam(Team):
+    sport: Sport
+    manager: Manager
+    venue: Venue
+    country: Country
+
+
+# TODO: Create Prematch,live,fulltime Event
+class Event(BaseModel):
+    tournament: Tournament
+    season: Season
+    round_info: RoundInfo = Field(alias='roundInfo')
+    custom_id: str = Field(alias='customId')
+    venue: Venue
+    home_team: EventTeam = Field(alias='homeTeam')
+    away_team: EventTeam = Field(alias='awayTeam')
