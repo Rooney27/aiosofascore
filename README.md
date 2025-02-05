@@ -48,5 +48,28 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+Get event data
+
+```python
+import asyncio
+from aiosofascore import BaseSoccerApi
+
+
+async def main():
+    
+    client = BaseSoccerApi()
+    event = await client.get_event(event_id='13363911')
+    print(event.home_team.name)
+    print(event.away_team.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+
 ## License
 This project is licensed under the MIT License — see the LICENSE file for details.
+
+## Contact
+If you have any questions or suggestions, feel free to open an issue or contact me via vasilewskij.fil@gmail.com
