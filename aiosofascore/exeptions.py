@@ -11,6 +11,5 @@ class ResponseParseContentError(Exception):
 
     def __str__(self):
         return ('Response processing error:\n'
-                f'api call: {self._path}'
-                f'response status:{self._response.status}'
-                f'response content:{self._response.content}')
+                f'Api call: {self._path}\n'
+                f'Response status: {self._response.status}\n')
