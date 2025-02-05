@@ -1,5 +1,7 @@
 from aiohttp import ClientSession, ClientResponse
 
+from sofascore.execptions import ResponseParseContentError
+
 
 class ClientSessionManagerMixin:
     async def __aenter__(self):
@@ -22,4 +24,7 @@ class ClientSessionManagerMixin:
         Returns:
             ClientResponse: The response from the API.
         """
-        return await (await self.session.get(self.BASE_URL + path, params=params)).json()
+        result = await self.session.get(self.BASE_URL + path, params=params)
+        if result.ok:
+            return await result.json()
+        raise ResponseParseContentError(result,path)
