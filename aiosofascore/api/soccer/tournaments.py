@@ -31,7 +31,7 @@ class SoccerTournamentApi:
 
     async def get_tournament_standings(self,
                                        unique_tournament: UniqueTournament,
-                                       season_year: str = None):
+                                       season_year: str = None) -> Standings:
         if season_year:
             season = await (await self.get_tournament_seasons(
                 unique_tournament)).get_season_by_year(season_year)

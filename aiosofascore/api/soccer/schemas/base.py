@@ -205,7 +205,7 @@ class Manager(BaseModel):
     name: str
     slug: str
     short_name: str = Field(alias='shortName')
-    id: str
+    id: int
 
 
 class EventManagers(BaseModel):
@@ -222,8 +222,8 @@ class City(BaseModel):
 
 
 class VenueCoordinates(BaseModel):
-    latitude: str
-    longtitude: str
+    latitude: float
+    longitude: float
 
 
 class Country(BaseModel):
