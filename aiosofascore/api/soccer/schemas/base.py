@@ -68,6 +68,9 @@ class CategoryList(BaseModel):
     def __iter__(self)->Iterator[Category]:
         return iter(self.categories)
 
+    def __getitem__(self, index: int) -> Category:
+        return self.categories[index]
+
 class UniqueTournament(BaseModel):
     """
     Represents a unique soccer tournament.
@@ -96,6 +99,9 @@ class UniqueTournamentsList(BaseModel):
 
     def __iter__(self)->Iterator[UniqueTournament]:
         return iter(self.unique_tournaments)
+
+    def __getitem__(self, index: int) -> UniqueTournament:
+        return self.unique_tournaments[index]
 
 class Tournament(BaseModel):
     category: Category
@@ -169,6 +175,8 @@ class SeasonList(BaseModel):
     def __iter__(self) ->Iterator[Season]:
         return iter(self.seasons)
 
+    def __getitem__(self, index: int) -> Season:
+        return self.seasons[index]
 
 class TeamForm(BaseModel):
     avg_rating: str = Field(alias='avgRating')
@@ -209,7 +217,7 @@ class RoundInfo(BaseModel):
     round: int
 
 
-class City:
+class City(BaseModel):
     name: str
 
 

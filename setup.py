@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="aiosofascore",
-    version="0.0.2",
+    version="0.0.4",
     description="API client for SofaScore soccer data",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",

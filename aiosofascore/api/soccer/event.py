@@ -1,4 +1,4 @@
-from src.api.soccer.schemas.base import PregameTeamForm, H2H, \
+from aiosofascore.api.soccer.schemas.base import PregameTeamForm, H2H, \
     EventManagers
 
 

@@ -1,7 +1,7 @@
-from src.api.mixins import ClientSessionManagerMixin
-from src.api.soccer.categories import SoccerCategoriesApi
-from src.api.soccer.event import SoccerEventApi
-from src.api.soccer.tournaments import SoccerTournamentApi
+from aiosofascore.api.mixins import ClientSessionManagerMixin
+from aiosofascore.api.soccer.categories import SoccerCategoriesApi
+from aiosofascore.api.soccer.event import SoccerEventApi
+from aiosofascore.api.soccer.tournaments import SoccerTournamentApi
 
 __all__ =['BaseSoccerApi']
 

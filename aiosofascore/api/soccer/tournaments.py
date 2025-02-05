@@ -1,4 +1,4 @@
-from src.api.soccer.schemas.base import UniqueTournament, Category, \
+from aiosofascore.api.soccer.schemas.base import UniqueTournament, Category, \
     SeasonList, Standings, UniqueTournamentsList
 
 __all__ = ['SoccerTournamentApi']

@@ -28,6 +28,7 @@ Here's how you can use aiosofascore to get data about football tournaments
 import asyncio
 from aiosofascore import BaseSoccerApi
 
+
 async def main():
     # Create a client
     client = BaseSoccerApi()
@@ -36,11 +37,12 @@ async def main():
     categories = await client.get_categories()
     for category in categories:
         print(f"Category: {category.name}")
-    
+
     # Fetch tournaments by category
-    tournaments = await client.get_tournament_by_category(categories[0])
+    tournaments = await client.get_tournaments_by_category(categories[0])
     for tournament in tournaments:
         print(f"Tournament: {tournament.name}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

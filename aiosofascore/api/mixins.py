@@ -1,6 +1,6 @@
 from aiohttp import ClientSession, ClientResponse
 
-from sofascore.execptions import ResponseParseContentError
+from ..exeptions import ResponseParseContentError
 
 
 class ClientSessionManagerMixin:

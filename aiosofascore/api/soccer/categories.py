@@ -1,6 +1,6 @@
 from typing import Union
 
-from src.api.soccer.schemas.base import CategoryList, Category
+from aiosofascore.api.soccer.schemas.base import CategoryList, Category
 
 __all__ = ['SoccerCategoriesApi']
 
