@@ -1,12 +1,12 @@
-from sofascore.api.soccer.schemas.base import UniqueTournament, Category, \
-    SeasonList, Standings
+from src.api.soccer.schemas.base import UniqueTournament, Category, \
+    SeasonList, Standings, UniqueTournamentsList
 
 __all__ = ['SoccerTournamentApi']
 
 
 class SoccerTournamentApi:
-    async def get_tournament_by_category(self, category: Category) -> list[
-        UniqueTournament]:
+    async def get_tournaments_by_category(self,
+                                          category: Category) -> UniqueTournamentsList:
         """
         Fetches a list of unique tournaments for a given soccer category.
 
@@ -19,11 +19,7 @@ class SoccerTournamentApi:
         async with self:
             content = await self._get(
                 f'api/v1/category/{category.id}/unique-tournaments')
-            return [
-                UniqueTournament(**uniqueTournament)
-                for uniqueTournament in
-                content['groups'][0]['uniqueTournaments']
-            ]
+            return UniqueTournamentsList(unique_tournaments=content['groups'][0]['uniqueTournaments'])
 
     async def get_tournament_seasons(self,
                                      unique_tournament: UniqueTournament) -> SeasonList:
@@ -37,9 +33,11 @@ class SoccerTournamentApi:
                                        unique_tournament: UniqueTournament,
                                        season_year: str = None):
         if season_year:
-            season = await (await self.get_tournament_seasons(unique_tournament)).get_season_by_year(season_year)
+            season = await (await self.get_tournament_seasons(
+                unique_tournament)).get_season_by_year(season_year)
         else:
-            season = await (await self.get_tournament_seasons(unique_tournament)).get_current_season()
+            season = await (await self.get_tournament_seasons(
+                unique_tournament)).get_current_season()
 
         async with self:
             response = await self._get(

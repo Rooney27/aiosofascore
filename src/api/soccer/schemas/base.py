@@ -1,7 +1,6 @@
-from typing import Optional
+from typing import Optional, Iterator
 from pydantic import BaseModel, fields, Field
 
-__all__ = ['Sport', 'Category', 'CategoryList', 'UniqueTournament']
 
 
 class Sport(BaseModel):
@@ -51,7 +50,7 @@ class CategoryList(BaseModel):
     """
     categories: list[Category]
 
-    async def find_all_by_name(self, name: str, search_amateur=False) -> list[
+    def find_all_by_name(self, name: str, search_amateur=False) -> list[
         Category]:
         """
         Finds all categories whose names contain the given substring.
@@ -66,7 +65,8 @@ class CategoryList(BaseModel):
         return [c for c in self.categories if
                 name.lower() in c.name.lower() and
                 ('amateur' in c.name.lower()) == search_amateur]
-
+    def __iter__(self)->Iterator[Category]:
+        return iter(self.categories)
 
 class UniqueTournament(BaseModel):
     """
@@ -91,6 +91,11 @@ class UniqueTournament(BaseModel):
     id: int
     displayInverseHomeAwayTeams: bool
 
+class UniqueTournamentsList(BaseModel):
+    unique_tournaments: list[UniqueTournament]
+
+    def __iter__(self)->Iterator[UniqueTournament]:
+        return iter(self.unique_tournaments)
 
 class Tournament(BaseModel):
     category: Category
@@ -154,12 +159,15 @@ class Season(BaseModel):
 class SeasonList(BaseModel):
     seasons: list[Season]
 
-    async def get_season_by_year(self, year: str) -> Season:
+    def get_season_by_year(self, year: str) -> Season:
         return next((season for season in self.seasons if season.year == year),
                     None)
 
-    async def get_current_season(self) -> Season:
+    def get_current_season(self) -> Season:
         return self.seasons[0]
+
+    def __iter__(self) ->Iterator[Season]:
+        return iter(self.seasons)
 
 
 class TeamForm(BaseModel):

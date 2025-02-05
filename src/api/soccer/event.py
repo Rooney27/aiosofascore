@@ -1,4 +1,4 @@
-from sofascore.api.soccer.schemas.base import PregameTeamForm, H2H, \
+from src.api.soccer.schemas.base import PregameTeamForm, H2H, \
     EventManagers
 
 

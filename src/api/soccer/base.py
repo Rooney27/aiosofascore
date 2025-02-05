@@ -1,7 +1,7 @@
-from sofascore.api.mixins import ClientSessionManagerMixin
-from sofascore.api.soccer.categories import SoccerCategoriesApi
-from sofascore.api.soccer.event import SoccerEventApi
-from sofascore.api.soccer.tournaments import SoccerTournamentApi
+from src.api.mixins import ClientSessionManagerMixin
+from src.api.soccer.categories import SoccerCategoriesApi
+from src.api.soccer.event import SoccerEventApi
+from src.api.soccer.tournaments import SoccerTournamentApi
 
 __all__ =['BaseSoccerApi']
 

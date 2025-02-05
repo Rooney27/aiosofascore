@@ -1,6 +1,6 @@
 from typing import Union
 
-from sofascore.api.soccer.schemas.base import CategoryList, Category
+from src.api.soccer.schemas.base import CategoryList, Category
 
 __all__ = ['SoccerCategoriesApi']
 
