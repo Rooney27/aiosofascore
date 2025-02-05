@@ -1,7 +1,8 @@
 from aiohttp import ClientSession, ClientResponse
 
-from ..exeptions import ResponseParseContentError
+from ..exception import ResponseParseContentError
 
+__all__ = ['ClientSessionManagerMixin']
 
 class ClientSessionManagerMixin:
     async def __aenter__(self):
