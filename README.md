@@ -1,4 +1,5 @@
 ![PyPI Version](https://img.shields.io/pypi/v/aiosofascore)
+[![PyPI Downloads](https://static.pepy.tech/badge/aiosofascore)](https://pepy.tech/projects/aiosofascore)
 ![LICENSE](https://img.shields.io/badge/License-MIT-blue.svg)
 
 # Aiosofascore
