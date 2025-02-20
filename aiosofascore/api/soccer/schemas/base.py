@@ -106,12 +106,12 @@ class UniqueTournamentsList(BaseModel):
 class Tournament(BaseModel):
     category: Category
     id: int
-    is_group: bool = Field(..., alias="isGroup")
-    is_live: bool = Field(..., alias="isLive")
+    is_group: bool = Field(alias="isGroup")
+    is_live: Optional[bool] = Field(alias="isLive",default=None)
     name: str
     priority: int
     slug: str
-    uniqueTournament: UniqueTournament
+    uniqueTournament: Optional[UniqueTournament] = None
 
 
 class Promotion(BaseModel):
@@ -120,9 +120,9 @@ class Promotion(BaseModel):
 
 
 class Team(BaseModel):
-    disabled: bool
+    disabled: Optional[bool] = None
     entityType: str
-    gender: str
+    gender: Optional[str] = None
     id: int
     name: str
     name_code: str = Field(..., alias="nameCode")
@@ -227,10 +227,10 @@ class VenueCoordinates(BaseModel):
 
 
 class Country(BaseModel):
-    alpha2: str
-    alpha3: str
-    name: str
-    slug: str
+    alpha2: Optional[str] = None
+    alpha3: Optional[str] = None
+    name: Optional[str] = None
+    slug: Optional[str] = None
 
 
 class Stadium(BaseModel):
@@ -264,17 +264,40 @@ class Referee(BaseModel):
 
 class EventTeam(Team):
     sport: Sport
-    manager: Manager
-    venue: Venue
+    manager: Optional[Manager] = None
+    venue: Optional[Venue] = None
     country: Country
 
 
 # TODO: Create Prematch,live,fulltime Event
 class Event(BaseModel):
     tournament: Tournament
-    season: Season
+    season: Optional[Season] = None
     round_info: RoundInfo = Field(alias='roundInfo')
     custom_id: str = Field(alias='customId')
     venue: Venue
     home_team: EventTeam = Field(alias='homeTeam')
     away_team: EventTeam = Field(alias='awayTeam')
+class EventTeamScore(BaseModel):
+    current: int
+    display: int
+    period1: Optional[int] = None
+    period2: Optional[int] = None
+    normaltime: Optional[int] = None
+class EventLiveStatus(BaseModel):
+    code: int
+    description: str
+    type: str
+
+class EventLive(Event):
+    round_info: Optional[RoundInfo] = None
+    status: EventLiveStatus
+    venue: Optional[Venue] = None
+    home_score: EventTeamScore = Field(alias='homeScore')
+    away_score: EventTeamScore = Field(alias='awayScore')
+    coverage: Optional[int] = None
+    finalResultOnly: bool
+    startTimestamp: int
+
+class EventLiveResults(BaseModel) :
+    events: list[EventLive]
