@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Union, Optional, List
 
 from pydantic import BaseModel, root_validator, model_validator
@@ -23,7 +24,7 @@ class Team(BaseModel):
     name: str
     nameCode: Optional[str] = None
     national: Optional[bool] = False
-    sport: Sport
+    sport: Optional[Sport] = None
     teamColors: TeamColors
     country: Optional[Country] = None
     type: Optional[str|int] = None
@@ -40,12 +41,18 @@ class Player(BaseModel):
     country: Optional[Country] = None
     sofascoreId: Optional[str] = None
 
+class Manager(BaseModel):
+    id: int
+    name: str
+    sport: Optional[Sport] = None
+    team: Optional[Team] = None
+    country: Optional[Country] = None
 
 class TournamentCategory(BaseModel):
     id: int
     name: str
     flag: str
-    sport: Sport
+    sport: Optional[Sport] = None
     country: Optional[Country] = None
 
 
@@ -73,11 +80,11 @@ class Event(BaseModel):
     awayTeam: Team
     homeScore: Optional[EventTeamScore]
     awayScore: Optional[EventTeamScore]
-    startTimestamp: int
+    startTimestamp: datetime
 
 
 class SearchEntityResult(BaseModel):
-    entity: Union[Team, Player, Event]
+    entity: Union[Team, Player, Event, Manager]
     type: str
     model_config = {
         "repr": True,
@@ -90,12 +97,13 @@ class SearchEntityResult(BaseModel):
 
         if not entity_data or not entity_type:
             return values
-
         if entity_type == "team":
             values["entity"] = Team.model_validate(entity_data)
         elif entity_type == "player":
             values["entity"] = Player.model_validate(entity_data)
         elif entity_type == "event":
             values["entity"] = Event.model_validate(entity_data)
+        elif entity_type == "manager":
+            values["entity"] = Manager.model_validate(entity_data)
 
         return values

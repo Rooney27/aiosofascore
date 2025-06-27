@@ -11,7 +11,7 @@ class SearchService:
     async def search_entities(
         self,
         query: str,
-        type: Literal["team", "player", "event"] | None = None
+        type: Literal["team", "player", "event", "manager"] | None = None
     ) -> AsyncGenerator[SearchEntityResult, None]:
         async for item in self.repository.search(query, type=type):
             yield item
