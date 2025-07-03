@@ -1,73 +1,61 @@
+[🇷🇺 Русский](README.md) | [🇬🇧 English](README.en.md)
+
 ![PyPI Version](https://img.shields.io/pypi/v/aiosofascore)
 [![PyPI Downloads](https://static.pepy.tech/badge/aiosofascore)](https://pepy.tech/projects/aiosofascore)
 ![LICENSE](https://img.shields.io/badge/License-MIT-blue.svg)
 
 # Aiosofascore
 
-**Aiosofascore** is an API client for SofaScore's soccer data, designed to provide easy access to soccer categories, tournaments, events, and much more. It is built with `aiohttp` for asynchronous HTTP requests and can be integrated into any Python project that needs soccer-related data.
+**Aiosofascore** — асинхронный Python-клиент для SofaScore API (футбол), предоставляющий удобный доступ к данным о командах, матчах, поиску и статистике.
 
-## Features
+## Возможности
 
-- Fetch soccer categories and tournaments
-- Get detailed tournament standings and seasons
-- Retrieve pregame forms, head-to-head stats, and event managers
-- Built using Python's asynchronous capabilities with `aiohttp`
+- Получение информации о командах, последних матчах, статистике
+- Поиск игроков, команд, событий, менеджеров
+- Асинхронный HTTP-клиент на базе aiohttp
+- Удобный фасад SofaScoreClient для всех сервисов
 
-## Installation
-
-To install **aiosofascore** from PyPI, run the following command:
+## Установка
 
 ```bash
 pip install aiosofascore
-
 ```
-## Usage Example
 
-Here's how you can use aiosofascore to get data about football tournaments
+## Быстрый старт
 
+### Получить последние события команды
 ```python
 import asyncio
-from aiosofascore import BaseSoccerApi
-
+from aiosofascore.client import SofaScoreClient
 
 async def main():
-    # Create a client
-    client = BaseSoccerApi()
-
-    # Fetch categories
-    categories = await client.get_categories()
-    for category in categories:
-        print(f"Category: {category.name}")
-
-    # Fetch tournaments by category
-    tournaments = await client.get_tournaments_by_category(categories[0])
-    for tournament in tournaments:
-        print(f"Tournament: {tournament.name}")
-
+    client = SofaScoreClient(base_url="http://api.sofascore.com/api")
+    team_id = 25856
+    result = await client.team.last_events.get_last_events(team_id)
+    for event in result.events:
+        tournament_name = event.tournament.name if event.tournament and event.tournament.name else "-"
+        print(f"Event id: {event.id}, турнир: {tournament_name}, дата: {event.startTimestamp}")
 
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Get event data
-
+### Пример поиска
 ```python
 import asyncio
-from aiosofascore import BaseSoccerApi
-
+from aiosofascore.client import SofaScoreClient
 
 async def main():
-    
-    client = BaseSoccerApi()
-    event = await client.get_event(event_id='13363911')
-    print(event.home_team.name)
-    print(event.away_team.name)
-
+    client = SofaScoreClient(base_url="http://api.sofascore.com/api")
+    # Поиск менеджеров по имени Alexander
+    async for result in client.search.search.search_entities("Alexander", type="manager"):
+        name = result.entity.name if result.entity and hasattr(result.entity, 'name') else "-"
+        team = result.entity.team.name if result.entity and hasattr(result.entity, 'team') and result.entity.team and hasattr(result.entity.team, 'name') else "-"
+        print(f"Имя: {name}, Тип: {result.type}, Команда: {team}")
 
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 
 ## License
 This project is licensed under the MIT License — see the LICENSE file for details.
