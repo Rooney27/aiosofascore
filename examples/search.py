@@ -2,7 +2,7 @@ import asyncio
 from aiosofascore.client import SofaScoreClient
 
 async def main():
-    client = SofaScoreClient(base_url="http://api.sofascore.com/api")
+    client = SofaScoreClient(base_url="http://api.sofascore.com")
     # Поиск менеджеров по имени Alexander
     print("=== Менеджеры с именем Alexander ===")
     async for result in client.search.search.search_entities("Alexander", type="manager"):
