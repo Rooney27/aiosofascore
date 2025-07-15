@@ -13,7 +13,8 @@ class ResponseParseContentError(Exception):
     def __str__(self):
         return (
             f"Response processing error:\n"
-            f"Api call: {self._path}\n"
+            f"Api call: {self._response.url}\n"
+            f"Headers request: {self._response.request_info}\n"
             f"Response status: {self._response.status}\n"
             f"Response: <async - use `await e.async_str()` to see body>\n"
         )
